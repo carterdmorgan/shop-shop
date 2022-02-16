@@ -4,7 +4,6 @@ import { useQuery } from '@apollo/client';
 import ProductItem from '../ProductItem';
 import { QUERY_PRODUCTS } from '../../utils/queries';
 import spinner from '../../assets/spinner.gif';
-import { useStoreContext } from '../../utils/GlobalState';
 import { idbPromise } from '../../utils/helpers';
 import { useSelector, useDispatch } from 'react-redux'
 import { selectProducts, updateProducts } from '../../utils/slices/ProductsSlice';
@@ -14,8 +13,6 @@ function ProductList() {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts)
 
-  const [oldState, oldDispatch] = useStoreContext();
-
   // const { currentCategory } = oldState;
   const currentCategory = useSelector(selectCurrentCategory);
 
@@ -23,10 +20,6 @@ function ProductList() {
 
   useEffect(() => {
     if (data) {
-      // oldDispatch({
-      //   type: UPDATE_PRODUCTS,
-      //   products: data.products
-      // });
       dispatch(updateProducts(data.products));
 
       // but let's also take each product and save it to IndexedDB using the helper function 
@@ -36,11 +29,6 @@ function ProductList() {
     } else {
       // since we're offline, get all of the data from the `products` store
       idbPromise('products', 'get').then((products) => {
-        // use retrieved data to set global state for offline browsing
-        // oldDispatch({
-        //   type: UPDATE_PRODUCTS,
-        //   products: products
-        // });
         dispatch(updateProducts(products));
       });
     }
@@ -56,7 +44,7 @@ function ProductList() {
   }
 
   return (
-    <div className="my-2" onClick={() => dispatch(updateProducts({products: ['mario', 'geno']}))}>
+    <div className="my-2">
       <h2>Our Products:</h2>
       {products.length ? (
         <div className="flex-row">

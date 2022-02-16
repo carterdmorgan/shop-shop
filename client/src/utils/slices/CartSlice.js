@@ -34,7 +34,6 @@ export const cartSlice = createSlice({
       }
     },
     addMultipleItems: (state, action) => {
-      console.log(action.payload);
       state.items = [
         ...state.items,
         ...action.payload

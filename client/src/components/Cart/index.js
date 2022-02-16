@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import CartItem from './CartItem';
 import Auth from '../../utils/auth';
 import './style.css';
-import { useStoreContext } from '../../utils/GlobalState';
 import { idbPromise } from "../../utils/helpers";
 import { QUERY_CHECKOUT } from '../../utils/queries';
 import { loadStripe } from '@stripe/stripe-js';
@@ -13,7 +12,6 @@ import { toggleCart, selectCart, addMultipleItems } from '../../utils/slices/Car
 const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
 
 const Cart = () => {
-  const [oldState, oldDispatch] = useStoreContext();
   const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
   const dispatch = useDispatch();
   const cart = useSelector(selectCart)
@@ -24,10 +22,10 @@ const Cart = () => {
       dispatch(addMultipleItems(cart));
     };
   
-    if (!oldState.cart.length) {
+    if (!cart.items.length) {
       getCart();
     }
-  }, [oldState.cart.length, oldDispatch]);
+  }, [cart.items.length]);
 
   useEffect(() => {
     if (data) {
