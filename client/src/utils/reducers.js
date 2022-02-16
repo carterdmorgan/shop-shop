@@ -15,34 +15,34 @@ import {
 export const reducer = (state, action) => {
   switch (action.type) {
     // if action type value is the value of `UPDATE_PRODUCTS`, return a new state object with an updated products array
-    case UPDATE_PRODUCTS:
+    case UPDATE_PRODUCTS: // check
       return {
         ...state,
         products: [...action.products]
       };
     // if action type value is the value of `UPDATE_CATEGORIES`, return a new state object with an updated categories array
-    case UPDATE_CATEGORIES:
+    case UPDATE_CATEGORIES: // check
       return {
         ...state,
         categories: [...action.categories]
       };
-    case UPDATE_CURRENT_CATEGORY:
+    case UPDATE_CURRENT_CATEGORY: // check
       return {
         ...state,
         currentCategory: action.currentCategory
       };
-    case ADD_TO_CART:
+    case ADD_TO_CART: // check
       return {
         ...state,
         cartOpen: true,
         cart: [...state.cart, action.product]
       };
-    case ADD_MULTIPLE_TO_CART:
+    case ADD_MULTIPLE_TO_CART: // check
       return {
         ...state,
         cart: [...state.cart, ...action.products],
       };
-    case REMOVE_FROM_CART:
+    case REMOVE_FROM_CART: // check
       let newState = state.cart.filter(product => {
         return product._id !== action._id;
       });
@@ -52,7 +52,7 @@ export const reducer = (state, action) => {
         cartOpen: newState.length > 0,
         cart: newState
       };
-    case UPDATE_CART_QUANTITY:
+    case UPDATE_CART_QUANTITY: // check
       return {
         ...state,
         cartOpen: true,
@@ -63,13 +63,13 @@ export const reducer = (state, action) => {
           return product;
         })
       };
-    case CLEAR_CART:
+    case CLEAR_CART: // check
       return {
         ...state,
         cartOpen: false,
         cart: []
       };
-    case TOGGLE_CART:
+    case TOGGLE_CART: // check
       return {
         ...state,
         cartOpen: !state.cartOpen

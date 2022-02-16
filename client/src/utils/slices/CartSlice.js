@@ -15,6 +15,8 @@ export const cartSlice = createSlice({
       state.open = !state.open;
     },
     addItem: (state, action) => {
+      state.open = true;
+      
       const itemToAdd = action.payload;
       const itemInCart = state.items.find((item) => item._id === action.payload._id)
       if (itemInCart) {
@@ -30,15 +32,37 @@ export const cartSlice = createSlice({
           purchaseQuantity: 1
         });
       }
+    },
+    addMultipleItems: (state, action) => {
+      console.log(action.payload);
+      state.items = [
+        ...state.items,
+        ...action.payload
+      ]
+    },
+    removeItem: (state, action) => {
+      const itemToRemove = action.payload;
+      state.items = state.items.filter(item => {
+        return item._id !== itemToRemove._id;
+      });
+    },
+    updateItemQuantity: (state, action) => {
+      const { item: updatedItem, purchaseQuantity } = action.payload;
+      state.items = state.items.map(item => {
+        if (updatedItem._id === item._id) {
+          item.purchaseQuantity = purchaseQuantity;
+        }
+        return item;
+      })
+    },
+    clearItems: state => {
+      state.items = [];
     }
   },
 });
 
-export const { toggleCart, addItem } = cartSlice.actions;
+export const { toggleCart, addItem, removeItem, updateItemQuantity, clearItems, addMultipleItems } = cartSlice.actions;
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state) => state.counter.value)`
-export const cartOpen = state => state.cart.cartOpen;
+export const selectCart = state => state.cart;
 
 export default cartSlice.reducer;
